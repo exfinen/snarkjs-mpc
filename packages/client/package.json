@@ -1,0 +1,63 @@
+{
+  "name": "@snarkjs-mpc/client",
+  "version": "0.0.1",
+  "description": "Snarkjs-based trusted setup phase 2 mpc client",
+  "author": "Kazumune Masaki",
+  "license": "GPL-3.0",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server",
+    "start:emu": "firebase emulators:start",
+    "test": "jest --runInBand",
+    "clean": "rimraf build && rimraf node_modules",
+    "deploy": "firebase deploy --only hosting"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "testMatch": [
+      "**/*.spec.ts"
+    ]
+  },
+  "dependencies": {
+    "css-loader": "4",
+    "dayjs": "^1.10.6",
+    "docker-names": "^1.1.1",
+    "fetch-readablestream": "^0.2.0",
+    "firebase": "^8.10.0",
+    "firebase-admin": "^9.11.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "snarkjs": "^0.4.6",
+    "stream-browserify": "^3.0.0",
+    "style-loader": "2.0.0",
+    "styled-components": "^5.3.0",
+    "webfontloader": "^1.6.28"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.15.0",
+    "@types/jest": "^27.0.1",
+    "@types/react": "^17.0.19",
+    "@types/react-dom": "^17.0.9",
+    "babel-loader": "^8.2.2",
+    "browserify": "^17.0.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "html-webpack-plugin": "4",
+    "jest": "^27.0.6",
+    "json-stringify-nice": "^1.1.4",
+    "os-browserify": "^0.3.0",
+    "rimraf": "^3.0.2",
+    "source-map-loader": "1.1.3",
+    "ts-jest": "^27.0.4",
+    "ts-loader": "8.2.0",
+    "typescript": "^4.3.5",
+    "url-loader": "^4.1.1",
+    "webpack": "4",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.0.0"
+  }
+}

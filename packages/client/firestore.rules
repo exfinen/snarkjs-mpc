@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /ceremonies/{ceremony} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /{path=**}/administrators/{doc} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /ceremonies/{ceremony}/circuits/{circuit} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+

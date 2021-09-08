@@ -1,0 +1,129 @@
+table {
+  border-collapse: collapse
+}
+
+a:visited {
+  color:inherit;
+}
+
+.center {
+  text-align: center;
+}
+
+#publish-attestation-button {
+  display: inline-block;
+  margin: 1rem;
+  font-size: 1rem;
+  background-color: green;
+  color: white;
+}
+
+#login-button {
+  display: inline-block;
+  margin: 1rem;
+  font-size: 1rem;
+  background-color: blue;
+  color: white;
+}
+
+#clear-participant-list-button {
+  display: inline-block;
+  margin: 1rem;
+  font-size: 1rem;
+  background-color: red;
+  color: white;
+}
+
+#launch-ceremony-button {
+  display: inline-block;
+  margin: 1rem;
+  font-size: 1rem;
+  background-color: green;
+  color: white;
+}
+
+.no-underline {
+  text-decoration: none;
+}
+.tweet-link {
+  display: inline-block;
+  margin: 1rem;
+  font-size: 1rem;
+}
+
+.page-header {
+  text-align: center;
+  margin: 1rem;
+  font-size: 1.5rem;
+}
+
+.page-subheader {
+  text-align: center;
+  margin: 1rem;
+  font-size: 1.2rem;
+}
+
+.row-with-calc-right {
+  font-weight: bold;
+}
+
+.non-user-row {
+  color: grey;
+}
+
+.user-row {
+  background-color: aqua;
+}
+
+.desc {
+  text-align: center;
+  margin: 0.3rem;
+  font-size: 1rem;
+}
+
+.status {
+  text-align: center;
+  margin: 1rem;
+  font-size: 1.3rem;
+}
+
+.participants-header {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 1rem;
+}
+
+.participants-table {
+  margin: auto;
+  font-size: 0.8rem;
+}
+
+.participants-table tr {
+  border: 1px solid #dedede;
+}
+
+.participants-table th, .participants-table td {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-style: solid dotted;
+  border-width: 1px;
+}
+
+.participants-table-col {
+  margin: 0 0.5rem 0.5rem 0
+}
+.id-col {
+  width: 3rem;
+  margin: 0 0.5rem 0.5rem 0
+}
+
+.calc-log-table {
+  margin: auto;
+  width: 20rem;
+  height: 22rem;
+  border: solid;
+}
+
+.calc-log-row {
+  font-size: 0.5rem;
+}

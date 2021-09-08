@@ -1,0 +1,8 @@
+**/.DS_Store
+**/data/**
+.eslintcache
+.eslintcache*
+firebaseConfig*
+.vscode
+lerna-debug.log
+node_modules
