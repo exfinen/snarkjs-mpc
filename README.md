@@ -14,7 +14,7 @@
    $ npm i -g firebase-tools
    ```
 
-1. Save the Firebase configuration obtained from Firebase console as [Project root]/config/firebaseConfig.js. The content should look like:
+1. Save the Firebase configuration obtained from Firebase console as `packages/client/src/config-firebase/firebaseConfig.js`. The content should look like:
    ```javascript
    const firebaseConfig = {
      apiKey: "...",
@@ -55,6 +55,8 @@
    ```shell
    $ npx lerna bootstrap
    ```
+
+1. Update ceremony config file `packages/client/config/default.ts`
 
 1. build client and deploy
    ```shell
