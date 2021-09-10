@@ -4,7 +4,7 @@ import "firebase/storage"
 import fetchStream from "fetch-readablestream"
 import { MemFile, Logger } from "snarkjs"
 import { Circuit } from "../types"
-import { firebaseConfig } from "../config/firebaseConfig"
+import { firebaseConfig } from "../firebaseConfig/firebaseConfig"
 
 firebase.initializeApp(firebaseConfig)
 

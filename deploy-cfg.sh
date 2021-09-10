@@ -4,7 +4,7 @@
 # - firebaseConfig.js
 
 FIREBASE_CONFIG=firebaseConfig
-CLIENT_CONFIG_DIR=packages/client/src/config
+CLIENT_CONFIG_DIR=packages/client/src/firebaseConfig
 
 if [ ! -f config/$FIREBASE_CONFIG.js ]; then
   echo "$FIREBASE_CONFIG.js is missing"

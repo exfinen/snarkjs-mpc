@@ -2,6 +2,7 @@
 **/data/**
 .eslintcache
 .eslintcache*
+serviceAccountPrvkey*
 firebaseConfig*
 .vscode
 lerna-debug.log
