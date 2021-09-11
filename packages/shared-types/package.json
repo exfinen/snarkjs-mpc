@@ -1,0 +1,22 @@
+{
+  "name": "@snarkjs-mpc/shared-types",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "description": "",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "Kazumune Masaki",
+  "license": "GPL-3.0--only",
+  "dependencies": {
+    "dayjs": "^1.10.7",
+    "firebase": "^8.10.0"
+  },
+  "devDependencies": {
+    "@types/firebase": "^3.2.1",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3"
+  }
+}

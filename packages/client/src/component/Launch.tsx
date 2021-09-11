@@ -2,14 +2,15 @@ import * as React from 'react'
 import { useState, useEffect } from 'react'
 import {
   useCompState,
-  useCompDispatch,
   useCeremony,
+  useCompDispatch,
   computeUserHash,
 } from "../context/Computation"
 import { useUserState } from "../context/User"
 import { StorageAgt } from "../agent/storageAgt"
 import { Participants } from "./Partcipants"
 import "../public/style.css"
+import { Ceremony } from "../types"
 
 interface Props {
   showLaunchButton: boolean,
@@ -18,8 +19,8 @@ interface Props {
 
 export const Launch = (props: Props) => {
   const compState = useCompState()
-  const ceremony = useCeremony()
   const user = useUserState()
+  const ceremony = useCeremony()
   const compDispatch = useCompDispatch()
   const [participants, setParticipants] = useState([] as JSX.Element[])
 
@@ -30,7 +31,7 @@ export const Launch = (props: Props) => {
         circuits: await props.storage.getInitialCircuits(ceremony.id, ceremony.circuitDirs),
       })
     }
-    f()
+    if (ceremony.id !== "") f()
   }, [ceremony.circuitDirs, ceremony.id, compDispatch])
 
   const handleStart = async () => {
@@ -38,7 +39,7 @@ export const Launch = (props: Props) => {
       type: "Start",
       user: user!.firebaseUser!.email!,
       userHash: await computeUserHash(user),
-      maxContrib: ceremony.maxContrib,
+      maxContrib: ceremony.maxContribRatio,
       gitHubAccessToken: user!.credential!.accessToken!,
       ceremony,
       compDispatch,

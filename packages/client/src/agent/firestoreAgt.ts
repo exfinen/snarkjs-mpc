@@ -2,12 +2,18 @@ import { Dispatch } from 'react'
 import firebase from 'firebase/app'
 import "firebase/firestore"
 import {
+  Circuit,
+} from "../types"
+import {
   CeremonyEnv,
   CircuitCfg,
-  Participant,
-  Circuit,
   CircuitCfgFirestore,
-} from "../types"
+  Participant,
+  MpcConfig,
+  toNullableNumber,
+  toMaybeUndefinedNumber,
+  toDayjs,
+} from "@snarkjs-mpc/shared-types"
 import dayjs from "dayjs"
 import { ymdHms, last, sleep } from "../utils"
 import { Logger } from "snarkjs"
@@ -51,24 +57,9 @@ export type AddParticipantResult =
 
 const storageAgt = new StorageAgt()
 
-const toTimestamp = (x: dayjs.Dayjs | undefined): firebase.firestore.Timestamp | null => {
+export const toTimestamp = (x: dayjs.Dayjs | undefined): firebase.firestore.Timestamp | null => {
   if (x === undefined) return null
   return firebase.firestore.Timestamp.fromMillis(x.valueOf())
-}
-
-const toNullableNumber = (x: number | undefined): number | null => {
-  if (x === undefined) return null
-  return x
-}
-
-const toMaybeUndefinedNumber = (x: number | null): number | undefined => {
-  if (x === null) return undefined
-  return x
-}
-
-const toDayjs = (x: firebase.firestore.Timestamp | null): dayjs.Dayjs | undefined => {
-  if (x === null) return undefined
-  return dayjs(x.toMillis())
 }
 
 const ceremonyEnvConv: firebase.firestore.FirestoreDataConverter<CeremonyEnv> = {
@@ -153,7 +144,7 @@ export class FirestoreAgt {
     contribTimeout: number,
     pollInterval: number,
     logWindowSize: number,
-    maxContrib: number,
+    maxContribRatio: number,
   ): CeremonyEnv {
 
     return {
@@ -166,7 +157,7 @@ export class FirestoreAgt {
       contribTimeout,
       pollInterval,
       logWindowSize,
-      maxContrib,
+      maxContribRatio,
     }
   }
 
@@ -394,6 +385,16 @@ export class FirestoreAgt {
     const newDoc = {...circuitSs.data()!, participants: []}
     await circuitRef.set(newDoc)
     console.log(`Cleared participant list`)
+  }
+
+  async getCurrentCeremony(): Promise<string> {
+    const configSs = await this.db
+      .collection("docs")
+      .doc("config")!
+      .get()
+
+    const mpcConfig = configSs.data() as MpcConfig
+    return mpcConfig.currentCeremony
   }
 
   async getCeremonyEnv(ceremonyId: string): Promise<CeremonyEnv | undefined> {

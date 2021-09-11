@@ -1,7 +1,7 @@
 import { useUserDispatch } from "../context/User"
-import { useCeremony } from "../context/Computation"
 import firebase from "firebase"
 import "../public/style.css"
+import { CeremonyEnv } from "@snarkjs-mpc/shared-types/src"
 
 const dockerNames = require('docker-names')
 
@@ -65,16 +65,22 @@ const Body = () => {
   )
 }
 
-interface LoginPanelProps {}
+interface LoginPanelProps {
+  ceremony: CeremonyEnv,
+}
 
 export const Login = (props: LoginPanelProps) => {
-  const ceremony = useCeremony()
+  const projectId = props.ceremony.projectId
+  const ceremonyId = props.ceremony.id
+  const startTime = props.ceremony.startTime.format("YYYY-MM-DD")
+  const endTime = props.ceremony.endTime.format("YYYY-MM-DD")
+
   return (
     <>
-      <div className="page-header">{ceremony.projectId}/{ceremony.id}</div>
+      <div className="page-header">{projectId}/{ceremonyId}</div>
 
       <div className="center desc" >
-        {`Trusted Setup Ceremony held between ${ceremony.startTime.format("YYYY-MM-DD")} and ${ceremony.endTime.format("YYYY-MM-DD")}`}
+        {`Trusted Setup Ceremony held between ${startTime} and ${endTime}`}
       </div>
 
       <div className="center desc">

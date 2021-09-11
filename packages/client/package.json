@@ -1,8 +1,10 @@
 {
   "name": "@snarkjs-mpc/client",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "author": "Kazumune Masaki",
   "description": "Snarkjs based MPC trusted Setup",
-  "homepage": "https://zkcream.web.app",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server",
@@ -11,7 +13,7 @@
     "clean": "rimraf build && rimraf node_modules",
     "deploy": "firebase deploy --only hosting"
   },
-  "license": "ISC",
+  "license": "GPL-3.0-only",
   "jest": {
     "transform": {
       ".(ts|tsx)": "ts-jest"
@@ -22,7 +24,7 @@
   },
   "dependencies": {
     "@lottiefiles/react-lottie-player": "^3.3.1",
-    "config": "^3.3.6",
+    "@snarkjs-mpc/shared-types": "^0.0.1",
     "css-loader": "4",
     "dayjs": "^1.10.6",
     "docker-names": "^1.1.1",
@@ -42,7 +44,6 @@
     "@babel/core": "^7.15.0",
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.15.0",
-    "@types/config": "^0.0.39",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.9.1",
     "@types/react": "^17.0.19",

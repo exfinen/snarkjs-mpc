@@ -42,7 +42,7 @@ export const Done = (props: DoneProps) => {
 
       <div className="center">
         <span id="publish-attestation-button" onClick={handlePublish2Git}>
-            [Publish Attestation to Gist]
+            [Publish attestation to Gist]
         </span>
       </div>
       <div className="center">

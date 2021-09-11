@@ -19,11 +19,13 @@ import "firebase/storage"
 import {
   User,
   Ceremony,
-  CeremonyEnv,
   Computation,
   Circuit,
-  Participant,
 } from "../types"
+import {
+  CeremonyEnv,
+  Participant,
+} from "@snarkjs-mpc/shared-types"
 import { FirestoreAgt, AddParticipantResult } from "../agent/firestoreAgt"
 import { GistAgt } from "../agent/gistAgt"
 import dayjs from 'dayjs'
@@ -110,9 +112,13 @@ interface SetPtauFileAction {
   type: "SetPtauFile",
   ptauFile: Uint8Array,
 }
-
+interface SetInitialEnvAction {
+  type: "SetInitialEnv",
+  ceremonyEnv: CeremonyEnv,
+}
 type CeremonyStateAction =
   | SetPtauFileAction
+  | SetInitialEnvAction
 
 type CeremonyStateReducer = (state: Ceremony, action: CeremonyStateAction) => Ceremony
 
@@ -121,7 +127,8 @@ export const [CompDispatchProvider, useCompDispatch] = createImmutableContext<Di
 export const [CeremonyProvider, useCeremony] = createImmutableContext<Ceremony>()
 export const [CeremonyDispatchProvider, useCeremonyDispath] = createImmutableContext<Dispatch<CeremonyStateAction>>()
 
-type CeremonyEnvProviderProps = PropsWithChildren<CeremonyEnv>
+type CeremonyEnvProviderProps = PropsWithChildren<{
+}>
 
 const storage = new StorageAgt()
 const firestoreAgt = new FirestoreAgt()
@@ -131,21 +138,44 @@ export const CeremonyEnvProvider = (props: CeremonyEnvProviderProps) => {
   const [compState, compStateDispatch] =
     useReducer<CompStateReducer>(compStateReducer, initialCompState())
 
-  const ceremony: Ceremony = {
-    ...props,
+  const initialCeremony: Ceremony = {
+    id: "",
+    projectId: "",
+    circuitDirs: [],
+    startTime: dayjs(),
+    endTime: dayjs(),
+    startTimeout: 0,
+    contribTimeout: 0,
+    pollInterval: 0,
+    logWindowSize: 0,
+    maxContribRatio: 0,
     ptauFile: new Uint8Array(),
   }
   const [ceremonyState, ceremonyStateDispatch] =
-    useReducer<CeremonyStateReducer>(ceremonyStateReducer, ceremony)
+    useReducer<CeremonyStateReducer>(ceremonyStateReducer, initialCeremony)
 
   useEffect(() => {
     const f = async () => {
-      console.log(`Getting Ptau file of ${ceremony.id}...`)
-      const ptauFile = await storage.getPtauFile(ceremony.id)
+      const ceremonyId = await firestoreAgt.getCurrentCeremony()
+      const ceremonyEnv =
+        await firestoreAgt.getCeremonyEnv(ceremonyId)
+
+      if (ceremonyEnv === undefined) {
+        throw new Error(`Ceremony '${ceremonyId}' not found in firestore'`)
+      }
+      ceremonyStateDispatch({
+        type: "SetInitialEnv",
+        ceremonyEnv,
+      })
+      console.log(`Loaded ceremony config: ${JSON.stringify(ceremonyEnv)}`)
+
+      console.log(`Getting Ptau file for ${ceremonyId}...`)
+      const ptauFile = await storage.getPtauFile(ceremonyId)
+
       ceremonyStateDispatch({ type: "SetPtauFile", ptauFile })
     }
     f()
-  }, [props.id])
+  }, [])
 
   return (
     <CompStateProvider value={compState}>
@@ -165,8 +195,11 @@ export const ceremonyStateReducer = (ceremony: Ceremony, action: CeremonyStateAc
     console.log("Setting ptau file loaded from Storge")
     return { ...ceremony, ptauFile: action.ptauFile }
 
+  } if (action.type === "SetInitialEnv") {
+    return { ...ceremony, ...action.ceremonyEnv }
+
   } else {
-    //const _: never = action.type
+    const _: never = action
   }
   return ceremony
 }

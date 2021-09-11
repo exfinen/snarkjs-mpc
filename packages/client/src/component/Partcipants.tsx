@@ -1,9 +1,9 @@
 import * as React from "react"
 import { useEffect } from "react"
 import {
-  Participant,
   CeremonyEnv,
-} from "../types"
+  Participant,
+} from "@snarkjs-mpc/shared-types"
 import { FirestoreAgt } from "../agent/firestoreAgt"
 import { Computation } from "../types"
 import { ymdHms } from "../utils"

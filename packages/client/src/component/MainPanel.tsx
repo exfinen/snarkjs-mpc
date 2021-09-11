@@ -10,20 +10,21 @@ import { Login } from "./Login"
 import { Done } from "./Done"
 import { Failed } from "./Failed"
 import { StorageAgt } from "../agent/storageAgt"
+import { CeremonyEnv } from "@snarkjs-mpc/shared-types"
 
 interface MainPanelProps {
   storage: StorageAgt,
 }
 
 export const MainPanel = (props: MainPanelProps) => {
+  const ceremony = useCeremony()
   const compState = useCompState()
   const user = useUserState()
-  const ceremony = useCeremony()
 
-  let body = <Login/>
+  let body = <Login ceremony={ceremony}/>
 
   if (user.firebaseUser === undefined) {
-    body = <Login/>
+    body = <Login ceremony={ceremony}/>
   } else {
     if (compState.step === "NotStarted") {
       body = <Launch

@@ -31,7 +31,7 @@ export class StorageAgt {
     ceremonyId: string,
     circuitDirs: string[],
   ): Promise<Circuit[]> => {
-    console.log(`Getting initial circuits of ${circuitDirs}`)
+    console.log(`Getting initial circuits of ${ceremonyId}-${circuitDirs}`)
     const circuits = []
 
     for(const circuitDir of circuitDirs) {

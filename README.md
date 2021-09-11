@@ -16,6 +16,7 @@
 
 1. Save the Firebase configuration obtained from Firebase console as `packages/client/src/config-firebase/firebaseConfig.js`. The content should look like:
    ```javascript
+   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
    const firebaseConfig = {
      apiKey: "...",
      authDomain: "...",
@@ -49,7 +50,10 @@
    $ gsutil cors set cors.json gs://zkcream.appspot.com
    ```
 
-### Application
+## Setting up ceremony
+Refer to admin package
+
+## Setting up application
 1. Install dependencies
 
    ```shell
@@ -64,6 +68,9 @@
    $ npm run build
    $ npm run deploy
    ```
+
+## Opening application
+Open `https://[project id].web.app` in browser
 
 ## Snarkjs included in this repository
 A slightly modified version of Snarkjs 0.4.6 that can run zkey functions on web browsers is included

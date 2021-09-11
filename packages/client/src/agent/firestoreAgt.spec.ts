@@ -1,10 +1,10 @@
 import firebase from 'firebase/app'
 import "firebase/firestore"
-import { AddParticipantResult, FirestoreAgt } from "./firestoreAgt"
+import { FirestoreAgt } from "./firestoreAgt"
 import {
   CeremonyEnv,
   Participant,
-} from "../types"
+} from "@snarkjs-mpc/shared-types"
 import stringify from 'json-stringify-nice'
 import dayjs from 'dayjs'
 
@@ -21,7 +21,7 @@ describe("Firebase Agent", () => {
     contribTimeout: 10,  // 10 sec
     pollInterval: 1,  // 1 sec
     logWindowSize: 0,
-    maxContrib,
+    maxContribRatio: 0,
   }
   const ceremonyId = ceremonyEnv.id
   const circuitId = ceremonyEnv.circuitDirs[0]
