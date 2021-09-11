@@ -44,7 +44,6 @@ export const MainPanel = (props: MainPanelProps) => {
 
     } else if (compState.step === "Completed") {
       body = <Done
-        circuitDir={ceremony.circuitDirs[0]}
         storage={props.storage}
       />
     } else if (compState.step === "Failed") {

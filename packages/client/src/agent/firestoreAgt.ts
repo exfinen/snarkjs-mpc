@@ -121,6 +121,7 @@ export class FirestoreAgt {
   private readonly db = firebase.firestore()
 
   defaultParticipant(index: number, user: string, hash: string): Participant {
+    const now = Math.floor(firebase.firestore.Timestamp.now().toMillis() / 1000)
     return {
       index,
       zKeyIndex: undefined,
@@ -128,7 +129,7 @@ export class FirestoreAgt {
       hash,
       zKeyURL: "",
       contribSigURL: "",
-      createdAt: dayjs(),
+      createdAt: dayjs.unix(now),
       startTime: undefined,
       endTime: undefined,
       isFailed: false,
@@ -283,6 +284,7 @@ export class FirestoreAgt {
     maxContribRatio: number,
     participant?: Participant,
   ): Promise<AddParticipantResult> {
+    console.log("ENTERED ADD PARTICIPANT FUNCTION")
     const ceremonyRef = this.db
       .collection("ceremonies")
       .doc(ceremonyId)!
@@ -293,18 +295,14 @@ export class FirestoreAgt {
       .withConverter(circuitCfgConv)
 
     return await this.db.runTransaction(async (txn: firebase.firestore.Transaction) => {
+      console.log("ENTERED ADD PARTICIPANT TXN")
       const circuitSs = await txn.get(circuitRef)
-      const participants: Participant[] = circuitSs.data() === undefined ? [] : circuitSs.data()!.participants!
+      const participants: Participant[] = circuitSs.data() === undefined ? [] : circuitSs.data()!.participants!.slice()
 
-      // check if the participant is already listed excluding its failures
-      for(const participant of participants) {
-        // found entry w/o failure
-        if (
-          participant.hash === hash &&
-          !participant.isFailed &&
-          participant.startTime === undefined
-        ) {
-          console.warn(`${user} is already on the list and waiting to start. not adding`)
+      const { done, notDone } = this.getDoneNotDone(participants)
+      for(const x of notDone) {
+        if (x.hash === hash) {
+          console.warn(`Didn't add since there is unfinished entry for ${user}`)
           return { type: "AlreadyWaiting" }
         }
       }
@@ -315,7 +313,7 @@ export class FirestoreAgt {
           x.hash === hash && !x.isFailed ? acc + 1 : acc
         , 0)
         const contribRatio = (numPastContribs + 1) / (participants.length + 1)
-        if (contribRatio > maxContribRatio) {
+        if (numPastContribs > 0 && contribRatio > maxContribRatio) {
           console.warn(
             `${user} will have contribution ratio of ${contribRatio * 100}% by adding a new contribution, ` +
             `but that will exceed max contributton radio ${maxContribRatio * 100}%. not adding`)
@@ -333,7 +331,8 @@ export class FirestoreAgt {
       }
       participants.push(participant)
 
-      txn.set(circuitRef, { ...circuitSs.data()!, participants })
+      const id = circuitSs.data()!.id
+      txn.set(circuitRef, { id, participants })
       console.log(`Added participant ${user}`)
 
       return { type: "Added", participant }

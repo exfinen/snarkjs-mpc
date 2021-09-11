@@ -9,7 +9,6 @@ import { GistAgt } from "../agent/gistAgt"
 import "../public/style.css"
 
 interface DoneProps {
-  circuitDir: string,
   storage: StorageAgt,
 }
 

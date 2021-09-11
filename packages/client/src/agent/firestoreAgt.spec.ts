@@ -88,59 +88,64 @@ describe("Firebase Agent", () => {
     })
 
     describe("Max contrib ratio check", () => {
-      it("should add if the partipant hasn't been added before", async () => {
-        const [user, hash] = getUser(2)
-        const res = await firestoreAgt.addParticipant(ceremonyId, circuitId, user, hash, 0.50)
-
-        expect(res).toEqual({ type: "Added" })
+      describe("Multiple circuits", () => {
+        // TODO write this tests
       })
+      describe("Single circuit", () => {
+        it("should add if the partipant hasn't been added before", async () => {
+          const [user, hash] = getUser(2)
+          const res = await firestoreAgt.addParticipant(ceremonyId, circuitId, user, hash, 0.50)
 
-      it("should add if contrib ratio < maxContribRatio", async () => {
-        // 50% contribution w/ 51% limit
-        const [user1, hash1] = getUser(1)
-        await addDone(user1, hash1)
+          expect(res).toEqual({ type: "Added" })
+        })
 
-        const [user2, hash2] = getUser(2)
-        await addDone(user2, hash2)
+        it("should add if contrib ratio < maxContribRatio", async () => {
+          // 50% contribution w/ 51% limit
+          const [user1, hash1] = getUser(1)
+          await addDone(user1, hash1)
 
-        const [user3, hash3] = getUser(3)
-        await addDone(user3, hash3)
+          const [user2, hash2] = getUser(2)
+          await addDone(user2, hash2)
 
-        const res = await firestoreAgt.addParticipant(ceremonyId, circuitId, user3, hash3, 0.51)
+          const [user3, hash3] = getUser(3)
+          await addDone(user3, hash3)
 
-        expect(res).toEqual({ type: "Added" })
-      })
+          const res = await firestoreAgt.addParticipant(ceremonyId, circuitId, user3, hash3, 0.51)
 
-      it("should add if contrib ratio == maxContribRatio", async () => {
-        // 50% contribution w/ 50% limit
-        const [user1, hash1] = getUser(1)
-        await addDone(user1, hash1)
+          expect(res).toEqual({ type: "Added" })
+        })
 
-        const [user2, hash2] = getUser(2)
-        await addDone(user2, hash2)
+        it("should add if contrib ratio == maxContribRatio", async () => {
+          // 50% contribution w/ 50% limit
+          const [user1, hash1] = getUser(1)
+          await addDone(user1, hash1)
 
-        const [user3, hash3] = getUser(3)
-        await addDone(user3, hash3)
+          const [user2, hash2] = getUser(2)
+          await addDone(user2, hash2)
 
-        const res = await firestoreAgt.addParticipant(ceremonyId, circuitId, user3, hash3, 0.50)
+          const [user3, hash3] = getUser(3)
+          await addDone(user3, hash3)
 
-        expect(res).toEqual({ type: "Added" })
-      })
+          const res = await firestoreAgt.addParticipant(ceremonyId, circuitId, user3, hash3, 0.50)
 
-      it("should not add if contrib ratio > maxContribRatio", async () => {
-        // 50% contribution w/ 49% limit
-        const [user1, hash1] = getUser(1)
-        await addDone(user1, hash1)
+          expect(res).toEqual({ type: "Added" })
+        })
 
-        const [user2, hash2] = getUser(2)
-        await addDone(user2, hash2)
+        it("should not add if contrib ratio > maxContribRatio", async () => {
+          // 50% contribution w/ 49% limit
+          const [user1, hash1] = getUser(1)
+          await addDone(user1, hash1)
 
-        const [user3, hash3] = getUser(3)
-        await addDone(user3, hash3)
+          const [user2, hash2] = getUser(2)
+          await addDone(user2, hash2)
 
-        const res = await firestoreAgt.addParticipant(ceremonyId, circuitId, user3, hash3, 0.49)
+          const [user3, hash3] = getUser(3)
+          await addDone(user3, hash3)
 
-        await expect(res).toEqual({ type: "ExceededContribLimit" })
+          const res = await firestoreAgt.addParticipant(ceremonyId, circuitId, user3, hash3, 0.49)
+
+          await expect(res).toEqual({ type: "ExceededContribLimit" })
+        })
       })
     })
 

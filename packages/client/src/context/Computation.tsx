@@ -47,10 +47,15 @@ interface StartComputationAction {
   type: "Start",
   user: string,
   userHash: string,
-  maxContrib: number,
+  maxContribRatio: number,
   gitHubAccessToken: string,
   ceremony: Ceremony,
-  compDispatch: Dispatch<CompStateAction>
+  compDispatch: Dispatch<CompStateAction>,
+}
+interface Go2NextCircuit {
+  type: "Go2NextCircuit",
+  ceremony: Ceremony,
+  compDispatch: Dispatch<CompStateAction>,
 }
 interface FinishCircuitComputationAction {
   type: "FinishCircuitComputation",
@@ -91,6 +96,7 @@ export type CompStateAction =
   | ClearParticipantListAction
   | AddLogAction
   | AddContribSigAction
+  | Go2NextCircuit
 
 type CompStateReducer = (state: Computation, action: CompStateAction) => Computation
 
@@ -243,10 +249,10 @@ export const compStateReducer = (computation: Computation, action: CompStateActi
       circuitId,
       action.user,
       action.userHash,
-      action.maxContrib,
+      action.maxContribRatio,
     ).then((res: AddParticipantResult) => {
       if (res.type === "Added") {
-        computeCircuits(action.ceremony, res.participant, next, action.compDispatch)
+        computeCircuit(action.ceremony, res.participant, next, action.compDispatch)
       } else if (res.type === "AlreadyWaiting") {
       } else if (res.type === "ExceededContribLimit") {
         action.compDispatch({
@@ -257,6 +263,33 @@ export const compStateReducer = (computation: Computation, action: CompStateActi
         const _: never = res
       }
     })
+    return next
+  }
+  else if (action.type === "Go2NextCircuit") {
+    const nextCircuit = computation.currCircuit + 1
+    const circuitId = computation.circuits[nextCircuit].id
+
+    console.log("ADDING PARCITIPANT")
+    firestoreAgt.addParticipant(
+      action.ceremony.id,
+      circuitId,
+      computation.user,
+      computation.userHash,
+      action.ceremony.maxContribRatio,
+    ).then((res: AddParticipantResult) => {
+      if (res.type === "Added") {
+        computeCircuit(action.ceremony, res.participant, next, action.compDispatch)
+      } else if (res.type === "AlreadyWaiting") {
+      } else if (res.type === "ExceededContribLimit") {
+        action.compDispatch({
+          type: "FailCircuitComputation",
+          reason: "Exceeded conbtibution limit",
+        })
+      } else {
+        const _: never = res
+      }
+    })
+    const next: Computation = {...computation, currCircuit: nextCircuit}
     return next
   }
   else if (action.type === "SetCircuits") {
@@ -284,11 +317,11 @@ export const compStateReducer = (computation: Computation, action: CompStateActi
     return { ...computation, contribSigs }
   }
   else if (action.type === "FinishCircuitComputation") {
-    if (computation.currCircuit === computation.circuits.length - 1) {  // if last circuit, finish
+    if (computation.currCircuit === computation.circuits.length - 1) {
       console.log("Finishing contribution session...")
       return { ...computation, step: "Completed" }
     } else {
-      return { ...computation, currCircuit: computation.currCircuit + 1 }  // go to next circuit
+      return { ...computation }
     }
   }
   else if (action.type === "FailCircuitComputation") {
@@ -393,7 +426,7 @@ const computeContribution = async (
   })
 }
 
-const computeCircuit = async (
+const computeCircuitActual = async (
   ceremony: Ceremony,
   computation: Computation,
   participant: Participant,
@@ -474,7 +507,7 @@ const computeCircuit = async (
   }
 }
 
-export const computeCircuits = async (
+export const computeCircuit = async (
   ceremony: Ceremony,
   participant: Participant,
   computation: Computation,
@@ -488,30 +521,32 @@ export const computeCircuits = async (
       status,
     })
   }
-  const numCircuits = computation.circuits.length
-  logger.info(`Started calcuating ${numCircuits} circuits`)
+  const circuit = computation.circuits[computation.currCircuit]
+  const msg = `Joined '${circuit.id}'`
+  logger.info(msg)
+  setStatus(msg)
 
-  for (const circuit of computation.circuits) {
-    const msg = `Joined '${circuit.id}'`
-    logger.info(msg)
-    setStatus(msg)
+  const res = await computeCircuitActual(
+    ceremony,
+    computation,
+    participant,
+    compDispatch,
+    logger,
+    circuit,
+    setStatus,
+  )
+  console.log(`Compute circuit result`, JSON.stringify(res))
 
-    const res = await computeCircuit(
-      ceremony,
-      computation,
-      participant,
-      compDispatch,
-      logger,
-      circuit,
-      setStatus,
-    )
-    console.log(`Compute circuit result`, JSON.stringify(res))
-    if (res.type === "Succeeded") {
-      continue
+  if (res.type === "Succeeded") {
+    if (computation.currCircuit < computation.circuits.length - 1) {
+      compDispatch({
+        type: "Go2NextCircuit",
+        ceremony,
+        compDispatch,
+      })
     }
-    else if (res.type === "AlreadyFailed" || res.type === "AlreadyStarted") {
-      return
-    }
-    else { const _: never = res }
   }
+  else if (res.type === "AlreadyFailed" || res.type === "AlreadyStarted") {
+  }
+  else { const _: never = res }
 }

@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsc",
     "add-ceremony": "npm run build && node dist/src/addCeremony.js",
+    "set-current-ceremony": "npm run build && node dist/src/setCurrentCeremony.js",
     "add-ptau": "npm run build && node dist/src/addPtau.js",
     "add-r1cs": "npm run build && node dist/src/addR1cs.js"
   },

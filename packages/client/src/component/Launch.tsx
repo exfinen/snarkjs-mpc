@@ -39,7 +39,7 @@ export const Launch = (props: Props) => {
       type: "Start",
       user: user!.firebaseUser!.email!,
       userHash: await computeUserHash(user),
-      maxContrib: ceremony.maxContribRatio,
+      maxContribRatio: ceremony.maxContribRatio,
       gitHubAccessToken: user!.credential!.accessToken!,
       ceremony,
       compDispatch,
