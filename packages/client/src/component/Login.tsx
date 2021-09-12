@@ -3,6 +3,8 @@ import firebase from "firebase"
 import "../public/style.css"
 import { CeremonyEnv } from "@snarkjs-mpc/shared-types/src"
 import { Biorhythm } from "react-biorhythm"
+import { useEffect, useState, useRef } from "react"
+import dayjs from "dayjs"
 
 const dockerNames = require('docker-names')
 
@@ -75,6 +77,25 @@ export const Login = (props: LoginPanelProps) => {
   const ceremonyId = props.ceremony.id
   const startTime = props.ceremony.startTime.format("YYYY-MM-DD")
   const endTime = props.ceremony.endTime.format("YYYY-MM-DD")
+  const biorhythmBegDate = "1920-01-01"
+
+  const [birthday, setBirthday] = useState(dayjs(biorhythmBegDate))
+  const birthdayRef = useRef(birthday)
+
+  useEffect(() => {
+    birthdayRef.current = birthday
+  }, [birthday])
+
+  useEffect(() => {
+    setInterval(() => {
+      const nextDay = birthdayRef.current.add(1, "day")
+      if (nextDay.isAfter(dayjs().add(-1, "day"))) {
+        setBirthday(dayjs(biorhythmBegDate))
+      } else {
+        setBirthday(nextDay)
+      }
+    }, 2000)
+  }, [])
 
   return (
     <>
@@ -92,7 +113,7 @@ export const Login = (props: LoginPanelProps) => {
 
       <div className="center biorhythm">
         <Biorhythm
-          birthday={new Date(1998, 5, 19)}
+          birthday={birthday.toDate()}
           width={100}
           height={50}
           daysBeforeToday={20}
