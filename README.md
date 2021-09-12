@@ -14,7 +14,7 @@
    $ npm i -g firebase-tools
    ```
 
-1. Save the Firebase configuration obtained from Firebase console as `packages/client/src/config-firebase/firebaseConfig.js`. The content should look like:
+1. Save the Firebase configuration obtained from Firebase console as `config/firebaseConfig.js`. The content should look something like:
    ```javascript
    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
    const firebaseConfig = {
@@ -29,12 +29,28 @@
    }
    ```
 
-1. Create OAuth application in GitHub and using the id and secret, set up Firebase GitHub authentication.
+1. Similarly save the Firebase private key file from Firebase console as `config/serviceAccountPrvkey.json`. The content should look something like:
+   ```json
+   {
+  "type": "service_account",
+  "project_id": "zkcream",
+  "private_key_id": "...",
+  "private_key": "...",
+  "client_email": "...",
+  "client_id": "...",
+  "auth_uri": "...",
+  "token_uri": "...",
+  "auth_provider_x509_cert_url": "...",
+  "client_x509_cert_url": "..."
+}
+   ```
 
 1. In repository root directory, run:
    ```shell
-   $ ./deploy-cfg.sh
+   $ ./deploy-firebase-config.sh
    ```
+
+1. Create OAuth application in GitHub and using the id and secret, set up Firebase GitHub authentication.
 
 1. Login to firebase (if haven't logged in yet)
    ```shell

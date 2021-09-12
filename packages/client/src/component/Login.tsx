@@ -2,6 +2,7 @@ import { useUserDispatch } from "../context/User"
 import firebase from "firebase"
 import "../public/style.css"
 import { CeremonyEnv } from "@snarkjs-mpc/shared-types/src"
+import { Biorhythm } from "react-biorhythm"
 
 const dockerNames = require('docker-names')
 
@@ -88,6 +89,16 @@ export const Login = (props: LoginPanelProps) => {
       </div>
 
       <Body />
+
+      <div className="center biorhythm">
+        <Biorhythm
+          birthday={new Date(1998, 5, 19)}
+          width={100}
+          height={50}
+          daysBeforeToday={20}
+          daysAfterToday={30}
+        />
+      </div>
     </>
   )
 }

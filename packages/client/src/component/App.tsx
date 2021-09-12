@@ -10,7 +10,7 @@ import "../public/style.css"
 interface AppProps {
 }
 
-const App = (props: AppProps) => {
+export const App = (props: AppProps) => {
   const storage = new StorageAgt()
 
   return (
@@ -22,5 +22,3 @@ const App = (props: AppProps) => {
     </CeremonyEnvProvider>
   );
 };
-
-export default App
