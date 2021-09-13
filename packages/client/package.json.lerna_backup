@@ -8,10 +8,9 @@
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server",
-    "start:emu": "firebase emulators:start",
     "test": "jest --runInBand",
     "clean": "rimraf build && rimraf node_modules",
-    "deploy": "firebase deploy --only hosting"
+    "deploy": "firebase deploy"
   },
   "license": "GPL-3.0-only",
   "jest": {
