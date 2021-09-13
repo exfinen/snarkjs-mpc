@@ -10,7 +10,6 @@
     "require": "./build/main.cjs"
   },
   "scripts": {
-		"ci": "npm run build",
     "test": "mocha",
     "build": "rollup -c config/rollup.cjs.config.js",
     "buildcli": "rollup -c config/rollup.cli.config.js",
