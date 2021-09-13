@@ -17,12 +17,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Installing dependencies
-        run: npm i
+        run: npx lerna bootstrap
 
       - name: Building package
-        run: npm run build
+        run: npx lerna run build
 
       - name: Deploying to Firebase
         run: |
-          yarn deploy --token=${{ secrets.SNARKJS_MPC_FIREBASE_HOSTING }}
+          cd packages/client && npm run deploy --token=${{ secrets.SNARKJS_MPC_FIREBASE_HOSTING }}
 
