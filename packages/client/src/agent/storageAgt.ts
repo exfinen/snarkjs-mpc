@@ -4,9 +4,6 @@ import "firebase/storage"
 import fetchStream from "fetch-readablestream"
 import { MemFile, Logger } from "snarkjs"
 import { Circuit } from "../types"
-import { firebaseConfig } from "../config-firebase/firebaseConfig"
-
-firebase.initializeApp(firebaseConfig)
 
 export class StorageAgt {
   private readonly firestore = firebase.firestore()
