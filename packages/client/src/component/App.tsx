@@ -6,7 +6,6 @@ import {
 import { UserProvider } from "../context/User"
 import { StorageAgt } from "../agent/storageAgt"
 import "../public/style.css"
-import firebase from 'firebase/app'
 
 interface AppProps {
 }
