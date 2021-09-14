@@ -25,9 +25,13 @@ jobs:
 
       - name: Installing dependencies
         run: npx lerna bootstrap
+        env:
+          FIREBASE_CONFIG: ${{secrets.FIREBASE_CONFIG}} 
 
       - name: Building package
         run: npx lerna run build
+        env:
+          SNARKJS_MPC_FIREBASE_HOSTING: ${{secrets.SNARKJS_MPC_FIREBASE_HOSTING}} 
 
       - name: Deploying to Firebase
         run: |
