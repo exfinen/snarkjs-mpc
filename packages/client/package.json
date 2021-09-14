@@ -11,6 +11,7 @@
     "test": "jest --runInBand",
     "clean": "rimraf build && rimraf node_modules",
     "deploy": "firebase deploy --token $SNARKJS_MPC_FIREBASE_HOSTING",
+    "deploy:local": "firebase deploy",
     "prepare": "node scripts/create-files-for-ci.js"
   },
   "license": "GPL-3.0-only",
