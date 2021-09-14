@@ -10,7 +10,7 @@
     "start": "webpack-dev-server",
     "test": "jest --runInBand",
     "clean": "rimraf build && rimraf node_modules",
-    "deploy": "firebase deploy",
+    "deploy": "firebase deploy --token $SNARKJS_MPC_FIREBASE_HOSTING",
     "prepare": "node scripts/create-files-for-ci.js"
   },
   "license": "GPL-3.0-only",
