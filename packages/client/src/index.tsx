@@ -6,9 +6,6 @@ import firebase from "firebase/app"
 
 window["process"] = process
 
-import { firebaseConfig } from "./config-firebase/firebaseConfig"
-firebase.initializeApp(firebaseConfig)
-
 ReactDOM.render(
   <React.StrictMode>
     <App/>
