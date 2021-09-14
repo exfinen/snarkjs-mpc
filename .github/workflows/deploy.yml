@@ -8,7 +8,7 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
-      - name: Checking out respository
+      - name: Check out respository
         uses: actions/checkout@main
         with:
           persist-credentials: false
@@ -18,20 +18,20 @@ jobs:
           git config --global url."https://github.com/".insteadOf
           ssh://git@github.com/
 
-      - name: Setting up Node.js ${{ matrix.node-version }}
+      - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Installing dependencies
+      - name: Install dependencies
         run: npx lerna bootstrap
         env:
           FIREBASE_CONFIG: ${{secrets.FIREBASE_CONFIG}} 
 
-      - name: Building package
+      - name: Build package
         run: npx lerna run build
 
-      - name: Deploying to Firebase
+      - name: Deploy to Firebase
         run: |
           cd packages/client && npm run deploy --token=${{ secrets.SNARKJS_MPC_FIREBASE_HOSTING }}
         env:
