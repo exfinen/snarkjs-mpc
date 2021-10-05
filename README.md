@@ -32,17 +32,17 @@
 1. Similarly save the Firebase private key file from Firebase console as `config/serviceAccountPrvkey.json`. The content should look something like:
    ```json
    {
-  "type": "service_account",
-  "project_id": "zkcream",
-  "private_key_id": "...",
-  "private_key": "...",
-  "client_email": "...",
-  "client_id": "...",
-  "auth_uri": "...",
-  "token_uri": "...",
-  "auth_provider_x509_cert_url": "...",
-  "client_x509_cert_url": "..."
-}
+      "type": "service_account",
+      "project_id": "zkcream",
+      "private_key_id": "...",
+      "private_key": "...",
+      "client_email": "...",
+      "client_id": "...",
+      "auth_uri": "...",
+      "token_uri": "...",
+      "auth_provider_x509_cert_url": "...",
+      "client_x509_cert_url": "..."
+   }
    ```
 
 1. In repository root directory, run:
@@ -80,7 +80,7 @@ Refer to admin package
 
 1. build client and deploy
    ```shell
-   $ cd client
+   $ cd packages/client
    $ npm run build
    $ npm run deploy
    ```
