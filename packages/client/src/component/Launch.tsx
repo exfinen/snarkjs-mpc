@@ -67,8 +67,8 @@ export const Launch = (props: Props) => {
 
   const launchCeremonyButton = props.showLaunchButton &&
     <div className="center">
-      <span id="launch-ceremony-button" onClick={handleStart}>
-        [Launch Ceremony]
+      <span id="launch-ceremony-button" className="btn" onClick={handleStart}>
+        Launch Ceremony
       </span>
     </div>
 
@@ -100,8 +100,8 @@ export const Launch = (props: Props) => {
       <div className="page-header">Welcome!</div>
       {body}
       <div className="center">
-        <span id="clear-participant-list-button" onClick={handleClearList}>
-          [Clear Participant List]
+        <span id="clear-participant-list-button" className="btn" onClick={handleClearList}>
+          Clear Participant List
         </span>
       </div>
       { participants }
