@@ -11,7 +11,7 @@ service cloud.firestore {
     }
     match /ceremonies/{ceremony}/circuits/{circuit} {
       allow read: if true;
-      allow write: if false;
+      allow write: if true;
     }
     match /docs/config {
     	allow read, write: if true;
