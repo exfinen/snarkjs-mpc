@@ -61,8 +61,8 @@ const Body = () => {
 
   return (
     <div className="center">
-      <span id="login-button" onClick={handleGitHubLogin}>
-        [GitHub Login]
+      <span id="login-button" className="btn" onClick={handleGitHubLogin}>
+        GitHub Login
       </span>
     </div>
   )

@@ -6,7 +6,7 @@ const fs = require("fs")
 Admin.initializeApp({
   credential: Admin.credential.cert(serviceAccountPrvkey),
   databaseURL: firebaseConfig.databaseURL,
-  storageBucket: "zkcream.appspot.com"
+  storageBucket: firebaseConfig.storageBucket
 });
 
 const bucket = Admin.storage().bucket()

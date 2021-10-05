@@ -13,7 +13,7 @@ const firebaseConfig = require("../config-firebase/firebaseConfig.js")
 Admin.initializeApp({
   credential: Admin.credential.cert(serviceAccountPrvkey as any),
   databaseURL: firebaseConfig.databaseURL,
-  storageBucket: "zkcream.appspot.com",
+  storageBucket: firebaseConfig.storageBucket,
 });
 
 
